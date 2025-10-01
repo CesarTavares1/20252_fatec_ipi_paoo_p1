@@ -1,6 +1,6 @@
 require('dotenv').config()
 const axios =require('axios')
-const {PROTOCOLO_BASICO, URL_GEO, URL_CURRENT, APPID_WEATHER, Q, LIMIT} = process.env
+const {PROTOCOLO_BASICO, URL_GEO, URL_CURRENT, APPID_WEATHER, Q, LIMIT, PROTOCOLO_SEGURO, URL_NEWS, APPID_NEWS, LANGUAGE} = process.env
 
 function coordenadas(){
     let url =`${PROTOCOLO_BASICO}://${URL_GEO}?q=${Q}&limit=${LIMIT}&appid=${APPID_WEATHER}`
@@ -36,4 +36,14 @@ async function condicoes(cidade, LAT, LON) {
     }
 }
 
-coordenadas()
+function noticias() {
+    let url = `${PROTOCOLO_SEGURO}://${URL_NEWS}?q=${Q}&language=pt&pageSize=5&apiKey=${APPID_NEWS}`;
+    axios.get(url).then((resposta) => {
+        resposta.data.articles.forEach((noticia, i) => {
+            console.log("Noticia: " + noticia.title)
+        });
+    }).catch((err) => {
+        console.log(err)
+    })    
+    
+}
